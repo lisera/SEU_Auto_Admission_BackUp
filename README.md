@@ -1,3 +1,7 @@
+备份[@quzard](https://github.com/quzard)的自动入校申请脚本
+
+--------
+
 # SEU_Auto_Admission
 东南大学自动入校申请
 
