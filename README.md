@@ -19,7 +19,7 @@
 
 ## 使用步骤
 
-**入校申请前需要健康申报，先使用[东南大学自动每日健康申报脚本](https://github.com/zgzhengSEU/SEU-Auto-Health-Declaration)进行自动申报，然后进行虾米那步骤**
+**入校申请前需要健康申报，先使用[东南大学自动每日健康申报脚本](https://github.com/zgzhengSEU/SEU-Auto-Health-Declaration)进行自动申报，然后进行下面步骤**
 
 1. 首先 fork 本项目到自己的仓库
 
