@@ -2,7 +2,7 @@
 
 **入校申请前需要健康申报，可以用[东南大学自动每日健康申报脚本](https://github.com/zgzhengSEU/SEU-Auto-Health-Declaration)自动申报**
 
-**[东南大学自动请假脚本](https://github.com/zgzhengSEU/SEU_Auto_Leave_backup)**
+**自动请假见：[东南大学自动请假脚本](https://github.com/zgzhengSEU/SEU_Auto_Leave_backup)**
 
 --------
 
