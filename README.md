@@ -1,5 +1,6 @@
 备份[@quzard](https://github.com/quzard)的自动入校申请脚本
 
+入校申请前需要健康申报，可以用[东南大学每日健康申报脚本](https://github.com/zgzhengSEU/SEU-Auto-Health-Declaration)
 --------
 
 # SEU_Auto_Admission
