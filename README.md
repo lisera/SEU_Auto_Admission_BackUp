@@ -21,9 +21,11 @@
 
 1. 首先 fork 本项目到自己的仓库
 
-2. 去 Actions 那 Enable Workflow
+![](https://cdn.jsdelivr.net/gh/zgzhengSEU/imagebed/Image/202112021430674.png)
 
-3. 进入自己 fork 的仓库，点击 Settings -> Secrets -> New repository secret，它们将作为配置项，在应用启动时传入程序。
+2. 进入自己 fork 的仓库，点击 Settings -> Secrets -> New repository secret，它们将作为配置项，在应用启动时传入程序。
+
+![image-20211202101810673](https://cdn.jsdelivr.net/gh/zgzhengSEU/imagebed/Image/202112021018740.png)
 
 **所有的可用 Secrets 及说明**
 
@@ -32,4 +34,12 @@
 | USERNAME   | 一卡通号                                                     |
 | PASSWORD   | 一卡通密码                                                   |
 
-4. 如果需要修改上报时间，修改 `.github/workflows/auto_admission.yml`
+![image-20211202102037983](https://cdn.jsdelivr.net/gh/zgzhengSEU/imagebed/Image/202112021020047.png)
+
+![image-20211202102001308](https://cdn.jsdelivr.net/gh/zgzhengSEU/imagebed/Image/202112021020697.png)
+
+3. 去 Actions 那 Enable Workflow, 然后点击 star 手动启动一次脚本
+
+![](https://cdn.jsdelivr.net/gh/zgzhengSEU/imagebed/Image/202112021433604.png)
+
+5. 如果需要修改上报时间，修改 `.github/workflows/auto_admission.yml`
