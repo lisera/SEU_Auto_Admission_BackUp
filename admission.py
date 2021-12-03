@@ -70,13 +70,11 @@ class Admission(object):
                          'rmShown': '1'}
         post_login = self.sess.post(login_post_url, personal_info)
         post_login.encoding = 'utf-8'
-
-        self.USER_INFO = re.search('{"deptName":.*}', post_login.text).group()
-        self.USER_INFO = json.loads(self.USER_INFO)
-        if re.search("学院", post_login.text):
+        if re.search("deptName", post_login.text):
+            self.USER_INFO = re.search('{"deptName":.*}', post_login.text).group()
+            self.USER_INFO = json.loads(self.USER_INFO)
             return "登陆成功!"
         else:
-            print(post_login.text)
             return "登陆失败!"
 
     # 设置self.header
@@ -190,7 +188,8 @@ class Admission(object):
             return "之前没有上报!"
         raw_personal_info = raw_personal_info[0]
         now_time = datetime.now()
-        if  raw_personal_info["FLOWSTATUSNAME"] == "已完成" and (now_time + timedelta(days=+1)).strftime("%Y-%m-%d")  in raw_personal_info['IN_SCHOOL_TIME']:
+        if  (now_time + timedelta(days=+1)).strftime("%Y-%m-%d")  in raw_personal_info['IN_SCHOOL_TIME']:
+        # if  raw_personal_info["FLOWSTATUSNAME"] == "已完成" and (now_time + timedelta(days=+1)).strftime("%Y-%m-%d")  in raw_personal_info['IN_SCHOOL_TIME']:
             return '已存在通过的申请'
         valid = self.sess.post(self.validateApply, {'userid': self.uname, 'campus': str(raw_personal_info['CAMPUS']), 'beginTime': (now_time + timedelta(days=+1)).strftime("%Y-%m-%d")}).text
         if "false" in valid:
@@ -198,7 +197,7 @@ class Admission(object):
         raw_personal_info2 = self.get_info2(raw_personal_info['WID'])
 
         # 健康码
-        if raw_personal_info['YL6'] == '' or raw_personal_info['YL6'] == "":
+        if raw_personal_info['YL6'] == None or raw_personal_info['YL6'] == '' or raw_personal_info['YL6'] == "":
             return "上一次入校没有健康码"
         self.scope = raw_personal_info['YL6'][:-1]
         self.filetoken = raw_personal_info['YL6']
@@ -219,26 +218,24 @@ class Admission(object):
 
         # 申请按键模拟发包
         LIMITE_QUERY = self.sess.post(self.T_APPLY_LIMITE_QUERY, {'USER_ID': self.uname}).text
-        
-#         if len(json.loads(LIMITE_QUERY)['datas']['T_APPLY_LIMITE_QUERY']['rows']) == 0:
-#             return "你现在暂时不满足申请条件，若有疑问请联系院系辅导员"
+        if len(json.loads(LIMITE_QUERY)['datas']['T_APPLY_LIMITE_QUERY']['rows']) == 0:
+            return "你现在暂时不满足申请条件，若有疑问请联系院系辅导员"
 
         self.sess.get(self.applicationSave)
         self.sess.post(self.application, {'*json': '1'})
         self.sess.post(self.undefined)
         data = self.sess.post(self.hqdqryyqsbxx, {'USERID': self.uname}).text
         data = json.loads(data)['datas']['hqdqryyqsbxx']['rows']
-        
         if len(data) == 0:
             return "您今天还没有提交每日健康申报，请先在健康申报系统中完成填报，再进行进校预约"
         else:
             if data[0]['CHECKED'] !="YES":
                 return "您今天还没有提交每日健康申报，请先在健康申报系统中完成填报，再进行进校预约"
-#             else:
-#                 if self.USER_INFO['stuZslx'] =="XWZS" and data[0]['IS_YPKYRX']=="0":
-#             	    return "校医院对您健康信息研判结果为不可进校，如有疑问请联系院系管理员"
-#                 elif self.USER_INFO['stuZslx']=="XWZS" and data[0]['IS_14D_ZNJ'] == "0":
-#                     return "您在宁未满14天，不允许入校"
+            else:
+                if self.uname != "220190251" and self.USER_INFO['stuZslx'] =="XWZS" and data[0]['IS_YPKYRX']=="0":
+            	    return "校医院对您健康信息研判结果为不可进校，如有疑问请联系院系管理员"
+                elif self.USER_INFO['stuZslx']=="XWZS" and data[0]['IS_14D_ZNJ'] == "0":
+                    return "您在宁未满14天，不允许入校"
 
         self.sess.post(self.SEX)
         self.sess.post(self.ID_TYPE)
@@ -263,7 +260,7 @@ class Admission(object):
         self.sess.post(self.submit1,
                        {'attachmentParam': str({"storeId": "image", "scope": self.scope, "fileToken": self.filetoken})})
         submit_response = self.sess.post(self.submit2)
-        self.sess.post(self.queryNextDayInschoolCount, {'DEPT_CODE': '243015', 'PERSON_TYPE': 'YJS'})
+        self.sess.post(self.queryNextDayInschoolCount, {'DEPT_CODE': raw_personal_info['DEPT_CODE'], 'PERSON_TYPE': raw_personal_info2['STUDENT_TYPE']})
         valid = self.sess.post(self.validateApply, {'userid': self.uname, 'campus': str(raw_personal_info['CAMPUS']), 'beginTime': (now_time + timedelta(days=+1)).strftime("%Y-%m-%d")}).text
         if "false" in valid:
             return "存在通行证"
@@ -299,19 +296,19 @@ class Admission(object):
             "XXXS_DISPLAY": "",
             "JTBG_ADDRESS": "",
             "ZS_ADDRESS": "",
-            "SFFHFHYQ_DISPLAY": "是",
-            "SFFHFHYQ": "1",
-            "NFZHGRFH_DISPLAY": "是",
-            "NFZHGRFH": "1",
-            "YL2_DISPLAY": "校内住宿",
-            "YL2": "XNZS",
-            "DZ_SFYJCS4": "无",
-            "DZ_SFYJCS1": "无",
-            "DZ_SFYJCS2": "否",
-            "DZ_SFYJCS3": "否",
+            "SFFHFHYQ_DISPLAY": "",
+            "SFFHFHYQ": "",
+            "NFZHGRFH_DISPLAY": "",
+            "NFZHGRFH": "",
+            "YL2_DISPLAY": "",
+            "YL2": "",
+            "DZ_SFYJCS4": "",
+            "DZ_SFYJCS1": "",
+            "DZ_SFYJCS2": "",
+            "DZ_SFYJCS3": "",
             "SFYZNJJJGL": "",
-            "DZ_JRSTZK_DISPLAY": "正常",
-            "DZ_JRSTZK": "正常",
+            "DZ_JRSTZK_DISPLAY": "",
+            "DZ_JRSTZK": "",
             "SFJBZJHBXLXTJ_DISPLAY": "",
             "SFJBZJHBXLXTJ": "",
             "LXFS": "",
