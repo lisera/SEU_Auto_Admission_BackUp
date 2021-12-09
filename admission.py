@@ -232,7 +232,7 @@ class Admission(object):
             if data[0]['CHECKED'] !="YES":
                 return "您今天还没有提交每日健康申报，请先在健康申报系统中完成填报，再进行进校预约"
             else:
-                if self.uname != "220190251" and self.USER_INFO['stuZslx'] =="XWZS" and data[0]['IS_YPKYRX']=="0":
+                if self.USER_INFO['stuZslx'] =="XWZS" and data[0]['IS_YPKYRX']=="0":
             	    return "校医院对您健康信息研判结果为不可进校，如有疑问请联系院系管理员"
                 elif self.USER_INFO['stuZslx']=="XWZS" and data[0]['IS_14D_ZNJ'] == "0":
                     return "您在宁未满14天，不允许入校"
