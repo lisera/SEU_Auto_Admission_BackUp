@@ -23,8 +23,6 @@ if __name__ == '__main__':
         admission = Admission(username, password, "./")
         res = admission.do_report()
         print(res)
-        if "入校申请成功" not in res or '已存在通过的申请' not in res or "存在通行证" not in res:
-            sys.exit(1)
     except Exception as e:
         print(str(e))
         sys.exit(1)
